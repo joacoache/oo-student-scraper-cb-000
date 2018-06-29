@@ -29,17 +29,17 @@ class Scraper
 #      twitter = profile.css('a').attribute('href').value if include?("twitter")
 #      blog = profile.css('a').attribute('href').value if include? (".com") unless include?("linkedin" || "github" || "twitter")
 #      hash.push(:linkedin=> linkedin,:github=> github,:blog=> blog)
-      html.css(".social-icon-container a").each do |link|
-        if link.attribute("href").value.include?("twitter")
-          student[:twitter] = link.attribute("href").value
-        elsif link.attribute("href").value.include?("linkedin")
-          student[:linkedin] = link.attribute("href").value
-        elsif link.attribute("href").value.include?("github")
-          student[:github] = link.attribute("href").value
-        else
-          student[:blog] = link.attribute("href").value
-        end
+    html.css(".social-icon-container a").each do |link|
+      if link.attribute("href").value.include?("twitter")
+        student[:twitter] = link.attribute("href").value
+      elsif link.attribute("href").value.include?("linkedin")
+        student[:linkedin] = link.attribute("href").value
+      elsif link.attribute("href").value.include?("github")
+        student[:github] = link.attribute("href").value
+      else
+        student[:blog] = link.attribute("href").value
       end
+    end
     student[:bio] = html.css('p').text
     student[:profile_quote] = html.css('.profile_quote').text
     student
