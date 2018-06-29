@@ -40,7 +40,7 @@ class Scraper
           student[:blog] = link.attribute("href").value
         end
       end
-    student[:bio] = html.css('.description-holder p').text
+    student[:bio] = html.css('p').text
     student[:profile_quote] = html.css('.profile_quote').text
     student
 #    binding.pry
