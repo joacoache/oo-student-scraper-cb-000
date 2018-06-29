@@ -29,21 +29,38 @@ class Scraper
 #      twitter = profile.css('a').attribute('href').value if include?("twitter")
 #      blog = profile.css('a').attribute('href').value if include? (".com") unless include?("linkedin" || "github" || "twitter")
 #      hash.push(:linkedin=> linkedin,:github=> github,:blog=> blog)
-    html.css(".social-icon-container a").each do |link|
-      if link.attribute("href").value.include?("twitter")
-        student[:twitter] = link.attribute("href").value
-      elsif link.attribute("href").value.include?("linkedin")
-        student[:linkedin] = link.attribute("href").value
-      elsif link.attribute("href").value.include?("github")
-        student[:github] = link.attribute("href").value
-      else
-        student[:blog] = link.attribute("href").value
-      end
-    end
-    student[:bio] = html.css('p').text
-    student[:profile_quote] = html.css('.profile_quote').text
-    student
+#    html.css(".social-icon-container a").each do |link|
+#      if link.attribute("href").value.include?("twitter")
+#        student[:twitter] = link.attribute("href").value
+#      elsif link.attribute("href").value.include?("linkedin")
+#        student[:linkedin] = link.attribute("href").value
+#      elsif link.attribute("href").value.include?("github")
+#        student[:github] = link.attribute("href").value
+#      else
+#        student[:blog] = link.attribute("href").value
+#      end
+#    end
+#    student[:bio] = html.css('p').text
+#    student[:profile_quote] = html.css('.profile_quote').text
+#    student
 #    binding.pry
+    links = html.css(".social-icon-container").children.css("a").map {|x| x.attribute('href').value}
+      links.each do |link|
+        if link.include?("linkedin")
+          student[:linkedin] = link
+        elsif link.include?("github")
+          student[:github] = link
+        elsif link.include?("twitter")
+          student[:twitter] = link
+        else
+          student[:blog] = link
+        end
+      end
+      student[:profile_quote] = html.css(".profile-quote").text if profile_page.css(".profile-quote")
+      student[:bio] = html.css("div.bio-content.content-holder div.description-holder p").text if profile_page.css("div.bio-content.content-holder div.description-holder p")
+
+      student
+
   end
 
 end
